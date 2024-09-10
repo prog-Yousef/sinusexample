@@ -1,0 +1,42 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: yousefs
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: sinusexample
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-north-1
+  iam:
+    role:
+      arn:aws:iam::396913740002:role/lecture-role
+
+build:
+  esbuild:
+    minify: true
+
+  package:
+    individually: true
+
+functions:
+  GetwebShop:
+    handler: functions/GetwebShop/index.handler
+    events:
+      - httpApi:
+          path: /products
+          method: get
+
+  PostwebShop:
+    handler: functions/PostwebShop/index.handler
+    events:
+      - httpApi:
+          path: /products
+          method: post
+
+  DeleteWebShop:
+    handler: functions/DeletewebShop/index.handler
+    events:
+      - httpApi:
+          path: /products/{serialToDelete}
+          method: delete
+
